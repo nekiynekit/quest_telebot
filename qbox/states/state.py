@@ -1,5 +1,25 @@
 from enum import Enum
 
+
 class State(Enum):
-    ENTER_QUEST_NAME = '0'
-    SMALL_TALK = '1'
+
+    SMALL_TALK = 0
+    
+    ADD_NEW_QUEST = 1
+    ACTIVATE_QUEST = 2
+    SHEDULE_QUEST = 3
+    
+    DELETE_QUEST = 4
+    DELETE_PANDORA_QUEST = 5
+    DELETE_SERIF_WALL_QUEST = 6
+    
+    RETURN_QUEST = 7
+    RETURN_PANDORA_QUEST = 8
+    RETURN_SERIF_WALL_QUEST = 9
+
+    CLOSE_QUEST = 10
+    CLOSE_PANDORA_QUEST = 11
+    CLOSE_SERIF_WALL_QUEST = 12
+
+    GET_STATISTIC = 13
+    GET_QUESTS = 14

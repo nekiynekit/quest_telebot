@@ -7,7 +7,6 @@ user_id = os.environ('USER_ID')
 
 
 def hijab(face, bot):
-    
     def wrapper(message):
         global current_state
         if not isinstance(current_state, State):
