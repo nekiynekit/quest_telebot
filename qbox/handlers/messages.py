@@ -9,13 +9,12 @@ from telebot.types import InlineKeyboardButton as inline
 
 class MessageHandler():
 
-    def __init__(self, db_name: str):
-        self.current_state = State.SMALL_TALK
-        self.qbox = QuestBox(db_name)
-        self.db_name = db_name
+    def __init__(self, state: State, qbox: QuestBox):
+        self.current_state = state
+        self.qbox = qbox
 
     @hijab
-    def start_msg(self, message: tb.types.Message, bot: tb.TeleBot):
+    def start_cmd(self, message: tb.types.Message, bot: tb.TeleBot):
         add = inline('Добавить квест', callback_data='add')
         activate = inline('Активировать квест', callback_data='activate')
         shedule = inline('Назначить квест', callback_data='shedule')
@@ -31,3 +30,8 @@ class MessageHandler():
             menu.add(item)
         bot.send_message(message.chat.id, 'Добро пожаловать',
                          reply_markup=menu)
+
+    @hijab
+    def cancel_cmd(self, message: tb.types.Message, bot: tb.TeleBot):
+        self.current_state = State.SMALL_TALK
+        bot.send_message(message.chat.id, 'Ок, отмена')
