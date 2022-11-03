@@ -1,44 +1,33 @@
 from states.state import State
 from utils.wrappers import hijab
+from logic.qboxes import QuestBox
 
 import telebot as tb
 
+from telebot.types import InlineKeyboardButton as inline
 
-#@bot.message_handler(commands=['start'])
-@hijab
-def start_msg(message, bot):
-    button_1 = tb.types.KeyboardButton('Новый квест')
-    button_2 = tb.types.KeyboardButton('Открыть ящик пандоры')
-    keyboard = tb.types.ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=False)
-    keyboard.add(button_1)
-    keyboard.add(button_2)
-    bot.send_message(message.chat.id, 'Ну здравствуй, Кит', reply_markup=keyboard)
 
-#@bot.message_handler(func=lambda message: message.text == 'Новый квест')
-@hijab
-def add_quest(message, bot):
-    global current_state
-    current_state = State.ENTER_QUEST_NAME
+class MessageHandler():
 
-    bot.send_message(message.chat.id, 'Расскажи что хочешь сделать')
+    def __init__(self, db_name: str):
+        self.current_state = State.SMALL_TALK
+        self.qbox = QuestBox(db_name)
+        self.db_name = db_name
 
-#@bot.message_handler(func=lambda _: current_state == State.ENTER_QUEST_NAME)
-@hijab
-def quest_name_process(message, bot):
-    global current_state, message_uid
-    current_state = State.SMALL_TALK
+    @hijab
+    def start_msg(self, message: tb.types.Message, bot: tb.TeleBot):
+        add = inline('Добавить квест', callback_data='add')
+        activate = inline('Активировать квест', callback_data='activate')
+        shedule = inline('Назначить квест', callback_data='shedule')
+        delete = inline('Удалить квест', callback_data='delete')
+        return_quest = inline('Вернуть квест', callback_data='return')
+        close = inline('Закрыть квест', callback_data='close')
+        get_quest = inline('Текущие квесты', callback_data='get_quest')
+        get_stats = inline('Текущая статистика', callback_data='get_stats')
 
-    quest = message.text
-    callback = tb.types.InlineKeyboardButton(text=quest, callback_data=str(message_uid))
-    message_uid += 1
-    quests.append(callback)
-
-    bot.send_message(message.chat.id, 'Все добавлено')
-
-#@bot.message_handler(func=lambda message: message.text == 'Открыть ящик пандоры')
-@hijab
-def render_quests(message, bot):
-    keyboard = tb.types.InlineKeyboardMarkup()
-    for quest in quests:
-        keyboard.add(quest)
-    bot.send_message(message.chat.id, 'Здесь когда-нибудь будут крутые цитаты))', reply_markup=keyboard)
+        menu = tb.types.InlineKeyboardMarkup()
+        for item in [add, activate, shedule, delete, return_quest, close,
+                     get_stats, get_quest]:
+            menu.add(item)
+        bot.send_message(message.chat.id, 'Добро пожаловать',
+                         reply_markup=menu)
