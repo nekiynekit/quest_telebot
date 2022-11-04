@@ -4,15 +4,16 @@ from enum import Enum
 class State(Enum):
 
     SMALL_TALK = 0
-    
+
     ADD_NEW_QUEST = 1
     ACTIVATE_QUEST = 2
-    SHEDULE_QUEST = 3
-    
+    SHEDULE_QUEST_NAME = 3
+    SHEDULE_QUEST_DATE = 3.5
+
     DELETE_QUEST = 4
     DELETE_PANDORA_QUEST = 5
     DELETE_SERIF_WALL_QUEST = 6
-    
+
     RETURN_QUEST = 7
     RETURN_PANDORA_QUEST = 8
     RETURN_SERIF_WALL_QUEST = 9

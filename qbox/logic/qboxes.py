@@ -1,6 +1,8 @@
 import sqlite3
 import datetime
 
+from ..states.state import State
+
 
 FIRST_DAY = datetime.date(1, 1, 1)
 
@@ -9,6 +11,7 @@ class QuestBox():
 
     def __init__(self, db_name='quest_box.db'):
         self.db_name = db_name
+        self.current_state = State.SMALL_TALK
 
         self._create_table('void', [
             'id INTEGER PRIMARY KEY AUTOINCREMENT',
