@@ -38,6 +38,9 @@ def register_message_handlers():
     bot.register_message_handler(m_handler.delete,
                                  func=m_handler.delete_filter,
                                  pass_bot=True)
+    bot.register_message_handler(m_handler.return_quest,
+                                 func=m_handler.return_filter,
+                                 pass_bot=True)
 
 
 def register_callback_handlers():
@@ -52,6 +55,9 @@ def register_callback_handlers():
                                         pass_bot=True)
     bot.register_callback_query_handler(c_handler.delete,
                                         func=c_handler.delete_filter,
+                                        pass_bot=True)
+    bot.register_callback_query_handler(c_handler.return_quest,
+                                        func=c_handler.return_filter,
                                         pass_bot=True)
 
 

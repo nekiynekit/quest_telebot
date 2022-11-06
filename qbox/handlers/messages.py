@@ -106,3 +106,14 @@ class MessageHandler():
 
     def delete_filter(self, *args, **kwargs):
         return self.qbox.current_state == State.DELETE_QUEST
+
+    @hijab
+    def return_quest(self, message: tb.types.Message, bot: tb.TeleBot):
+        quest = message.text
+        self.qbox.current_state = State.SMALL_TALK
+        for table_name in ['pandora', 'serif_wall']:
+            self.qbox.return_quest(quest, table_name)
+        bot.send_message(message.chat.id, 'Квест возвращен')
+
+    def return_filter(self, *args, **kwargs):
+        return self.qbox.current_state == State.RETURN_QUEST
