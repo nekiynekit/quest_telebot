@@ -41,6 +41,9 @@ def register_message_handlers():
     bot.register_message_handler(m_handler.return_quest,
                                  func=m_handler.return_filter,
                                  pass_bot=True)
+    bot.register_message_handler(m_handler.close,
+                                 func=m_handler.close_filter,
+                                 pass_bot=True)
 
 
 def register_callback_handlers():
@@ -58,6 +61,15 @@ def register_callback_handlers():
                                         pass_bot=True)
     bot.register_callback_query_handler(c_handler.return_quest,
                                         func=c_handler.return_filter,
+                                        pass_bot=True)
+    bot.register_callback_query_handler(c_handler.close_quest,
+                                        func=c_handler.close_filter,
+                                        pass_bot=True)
+    bot.register_callback_query_handler(c_handler.render,
+                                        func=c_handler.render_filter,
+                                        pass_bot=True)
+    bot.register_callback_query_handler(c_handler.serifs,
+                                        func=c_handler.serifs_filter,
                                         pass_bot=True)
 
 

@@ -24,3 +24,4 @@ class State(Enum):
 
     GET_STATISTIC = 13
     GET_QUESTS = 14
+    GET_SHEDULE = 15

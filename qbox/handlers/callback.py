@@ -5,6 +5,13 @@ from ..utils.wrappers import hijab
 import telebot as tb
 
 
+def tuple2str(data: tuple):
+    if len(data) == 1:
+        return data[0]
+    string = f'#{data[1]}# --> {data[0]}'
+    return string
+
+
 class CallbackHandler():
 
     def __init__(self, state: State, qbox: QuestBox):
@@ -68,10 +75,46 @@ class CallbackHandler():
         return self.qbox.current_state == State.SMALL_TALK and \
             call.data == 'return'
 
+    @hijab
+    def close_quest(self, call: tb.types.CallbackQuery, bot: tb.TeleBot):
+        self.qbox.current_state = State.CLOSE_QUEST
+        pandoras = self.qbox.get_table('pandora')
+        serifs = self.qbox.get_table('serif_wall')
+        pandoras.extend(serifs)
+        menu = self.create_keyboard(pandoras)
+        bot.send_message(call.from_user.id, 'Выбери квест', reply_markup=menu)
+
+    def close_filter(self, call: tb.types.CallbackQuery):
+        return self.qbox.current_state == State.SMALL_TALK and \
+            call.data == 'close'
+
+    @hijab
+    def render(self, call: tb.types.CallbackQuery, bot: tb.TeleBot):
+        self.qbox.current_state = State.GET_QUESTS
+        quests = self.qbox.get_table('pandora')
+        menu = self.create_inline_keyboard(quests)
+        bot.send_message(call.from_user.id, 'Пандора:', reply_markup=menu)
+
+    def render_filter(self, call: tb.types.CallbackQuery):
+        return self.qbox.current_state == State.SMALL_TALK and \
+            call.data == 'get_quest'
+
+    @hijab
+    def serifs(self, call: tb.types.CallbackQuery, bot: tb.TeleBot):
+        self.qbox.current_state = State.GET_SHEDULE
+        quests = self.qbox.get_table('serif_wall')
+        menu = self.create_inline_keyboard(quests)
+        bot.send_message(call.from_user.id, 'Засечки:', reply_markup=menu)
+
+    def serifs_filter(self, call: tb.types.CallbackQuery):
+        return self.qbox.current_state == State.SMALL_TALK and \
+            call.data == 'sheduler'
+
     def create_inline_keyboard(self, data: list):
         menu = tb.types.InlineKeyboardMarkup()
         for idx, item in enumerate(data):
-            butt = tb.types.InlineKeyboardButton(item[0], callback_data=idx)
+            butt = tb.types.InlineKeyboardButton(tuple2str(item),
+                                                 callback_data=str(idx))
             menu.add(butt)
         return menu
 

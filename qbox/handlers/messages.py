@@ -23,11 +23,12 @@ class MessageHandler():
         return_quest = inline('Вернуть квест', callback_data='return')
         close = inline('Закрыть квест', callback_data='close')
         get_quest = inline('Текущие квесты', callback_data='get_quest')
+        get_shedule = inline('Раписание', callback_data='sheduler')
         get_stats = inline('Текущая статистика', callback_data='get_stats')
 
         menu = tb.types.InlineKeyboardMarkup()
         for item in [add, activate, shedule, delete, return_quest, close,
-                     get_stats, get_quest]:
+                     get_stats, get_quest, get_shedule]:
             menu.add(item)
         bot.send_message(message.chat.id, 'Добро пожаловать',
                          reply_markup=menu)
@@ -117,3 +118,14 @@ class MessageHandler():
 
     def return_filter(self, *args, **kwargs):
         return self.qbox.current_state == State.RETURN_QUEST
+
+    @hijab
+    def close(self, message: tb.types.Message, bot: tb.TeleBot):
+        quest = message.text
+        self.qbox.current_state = State.SMALL_TALK
+        self.qbox.close_pandora_quest(quest)
+        self.qbox.close_serif_quest(quest)
+        bot.send_message(message.chat.id, 'Квест закрыт')
+
+    def close_filter(self, *args, **kwargs):
+        return self.qbox.current_state == State.CLOSE_QUEST
