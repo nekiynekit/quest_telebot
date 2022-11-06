@@ -71,6 +71,9 @@ def register_callback_handlers():
     bot.register_callback_query_handler(c_handler.serifs,
                                         func=c_handler.serifs_filter,
                                         pass_bot=True)
+    bot.register_callback_query_handler(c_handler.statistics,
+                                        func=c_handler.stats_filter,
+                                        pass_bot=True)
 
 
 if __name__ == '__main__':

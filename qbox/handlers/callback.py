@@ -8,6 +8,7 @@ import telebot as tb
 def tuple2str(data: tuple):
     if len(data) == 1:
         return data[0]
+    print(data)
     string = f'#{data[1]}# --> {data[0]}'
     return string
 
@@ -90,7 +91,7 @@ class CallbackHandler():
 
     @hijab
     def render(self, call: tb.types.CallbackQuery, bot: tb.TeleBot):
-        self.qbox.current_state = State.GET_QUESTS
+        self.qbox.current_state = State.SMALL_TALK
         quests = self.qbox.get_table('pandora')
         menu = self.create_inline_keyboard(quests)
         bot.send_message(call.from_user.id, 'Пандора:', reply_markup=menu)
@@ -101,7 +102,7 @@ class CallbackHandler():
 
     @hijab
     def serifs(self, call: tb.types.CallbackQuery, bot: tb.TeleBot):
-        self.qbox.current_state = State.GET_SHEDULE
+        self.qbox.current_state = State.SMALL_TALK
         quests = self.qbox.get_table('serif_wall')
         menu = self.create_inline_keyboard(quests)
         bot.send_message(call.from_user.id, 'Засечки:', reply_markup=menu)
@@ -109,6 +110,20 @@ class CallbackHandler():
     def serifs_filter(self, call: tb.types.CallbackQuery):
         return self.qbox.current_state == State.SMALL_TALK and \
             call.data == 'sheduler'
+
+    @hijab
+    def statistics(self, call: tb.types.CallbackQuery, bot: tb.TeleBot):
+        self.qbox.current_state = State.SMALL_TALK
+        stats = self.qbox.get_statistics()
+        helper = f'Закрыто задач: #{len(stats)}#'
+        data = tuple([helper])
+        data = [data]
+        menu = self.create_inline_keyboard(data)
+        bot.send_message(call.from_user.id, 'Статистики:', reply_markup=menu)
+
+    def stats_filter(self, call: tb.types.CallbackQuery):
+        return self.qbox.current_state == State.SMALL_TALK and \
+            call.data == 'get_stats'
 
     def create_inline_keyboard(self, data: list):
         menu = tb.types.InlineKeyboardMarkup()
