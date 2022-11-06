@@ -16,6 +16,8 @@ class CallbackHandler():
         bot.send_message(call.from_user.id, 'Опиши пожалуйста квест')
 
     def add_filter(self, call: tb.types.CallbackQuery):
+        print(f'id состояния колбэка: {id(self.qbox.current_state)}')
+        print(f'Стоит в состоянии {self.qbox.current_state}')
         return self.qbox.current_state == State.SMALL_TALK and\
             call.data == 'add'
 

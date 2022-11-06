@@ -82,3 +82,16 @@ class MessageHandler():
 
     def shedule_text_filter(self, *args, **kwargs):
         return self.qbox.current_state == State.SHEDULE_QUEST_NAME
+
+    @hijab
+    def activate(self, message: tb.types.Message, bot: tb.TeleBot):
+        quest = message.text
+        self.qbox.current_state = State.SMALL_TALK
+        try:
+            self.qbox.activate_quest(quest)
+            bot.send_message(message.chat.id, 'Все прошло хорошо')
+        except Exception:
+            bot.send_message(message.chat.id, 'Что-то пошло не так')
+        
+    def activate_filter(self, *args, **kwargs):
+        return self.qbox.current_state == State.ACTIVATE_QUEST

@@ -21,7 +21,7 @@ def register_message_handlers():
                                  pass_bot=True)
     bot.register_message_handler(m_handler.cancel_cmd, commands=['cancel'],
                                  pass_bot=True)
-    bot.register_message_handler(m_handler.add_filter,
+    bot.register_message_handler(m_handler.add_quest,
                                  func=m_handler.add_filter, pass_bot=True)
     bot.register_message_handler(m_handler.small_talk,
                                  func=m_handler.small_talk_filter,
@@ -32,6 +32,9 @@ def register_message_handlers():
     bot.register_message_handler(m_handler.shedule_text_quest,
                                  func=m_handler.shedule_text_filter,
                                  pass_bot=True)
+    bot.register_message_handler(m_handler.activate,
+                                 func=m_handler.activate_filter,
+                                 pass_bot=True)
 
 
 def register_callback_handlers():
@@ -40,7 +43,7 @@ def register_callback_handlers():
                                         pass_bot=True)
     bot.register_callback_query_handler(c_handler.activate,
                                         func=c_handler.activate_filter,
-                                        pass_bot=True)                                    
+                                        pass_bot=True)
     bot.register_callback_query_handler(c_handler.shedule,
                                         func=c_handler.shedule_filter,
                                         pass_bot=True)
