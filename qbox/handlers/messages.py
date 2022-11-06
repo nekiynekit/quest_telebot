@@ -65,7 +65,7 @@ class MessageHandler():
             return
         self.qbox.current_state = State.SMALL_TALK
         try:
-            self.qbox.shedule_quest(self.qbox.waiting_quest, date)
+            self.qbox.shedule_quest(self.qbox.waiting_quest, date.date())
             bot.send_message(message.chat.id, 'Все в порядке')
         except Exception:
             bot.send_message(message.chat.id, 'Что-то пошло не так')
@@ -92,6 +92,17 @@ class MessageHandler():
             bot.send_message(message.chat.id, 'Все прошло хорошо')
         except Exception:
             bot.send_message(message.chat.id, 'Что-то пошло не так')
-        
+
     def activate_filter(self, *args, **kwargs):
         return self.qbox.current_state == State.ACTIVATE_QUEST
+
+    @hijab
+    def delete(self, message: tb.types.Message, bot: tb.TeleBot):
+        quest = message.text
+        self.qbox.current_state = State.SMALL_TALK
+        for table_name in ['pandora', 'serif_wall']:
+            self.qbox.delete_quest(quest, table_name)
+        bot.send_message(message.chat.id, 'Квест удален')
+
+    def delete_filter(self, *args, **kwargs):
+        return self.qbox.current_state == State.DELETE_QUEST

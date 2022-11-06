@@ -41,6 +41,20 @@ class CallbackHandler():
         return self.qbox.current_state == State.SMALL_TALK and \
             call.data == 'shedule'
 
+    @hijab
+    def delete(self, call: tb.types.CallbackQuery, bot: tb.TeleBot):
+        self.qbox.current_state = State.DELETE_QUEST
+        pandoras = self.qbox.get_table('pandora')
+        serifs = self.qbox.get_table('serif_wall')
+        pandoras.extend(serifs)
+        print(serifs)
+        menu = self.create_keyboard(pandoras)
+        bot.send_message(call.from_user.id, 'Выбери квест', reply_markup=menu)
+
+    def delete_filter(self, call: tb.types.CallbackQuery):
+        return self.qbox.current_state == State.SMALL_TALK and \
+            call.data == 'delete'
+
     def create_inline_keyboard(self, data: list):
         menu = tb.types.InlineKeyboardMarkup()
         for idx, item in enumerate(data):
