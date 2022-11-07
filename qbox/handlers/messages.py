@@ -123,7 +123,10 @@ class MessageHandler():
     def close(self, message: tb.types.Message, bot: tb.TeleBot):
         quest = message.text
         self.qbox.current_state = State.SMALL_TALK
-        self.qbox.close_pandora_quest(quest)
+        try:
+            self.qbox.close_pandora_quest(quest)
+        except KeyError:
+            pass
         self.qbox.close_serif_quest(quest)
         bot.send_message(message.chat.id, 'Квест закрыт')
 
