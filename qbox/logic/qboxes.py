@@ -93,8 +93,12 @@ class QuestBox():
         self._process_sql(add_request)
         self.delete_quest(quest, 'serif_wall')
 
-    def get_statistics(self, left_border=FIRST_DAY,
-                       right_border=datetime.date.today()):
+    def get_statistics(self, left_border=None,
+                       right_border=None):
+        if left_border is None:
+            left_border = FIRST_DAY
+        if right_border is None:
+            right_border = datetime.date.today()
         fetch_request = f"SELECT * FROM panihida\
             WHERE was_closed BETWEEN '{left_border}' and '{right_border}'"
         result = self._process_sql(fetch_request)
