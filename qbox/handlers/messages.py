@@ -125,10 +125,13 @@ class MessageHandler():
         self.qbox.current_state = State.SMALL_TALK
         try:
             self.qbox.close_pandora_quest(quest)
+            bot.send_message(message.chat.id, 'Квест закрыт')
         except KeyError:
-            pass
-        self.qbox.close_serif_quest(quest)
-        bot.send_message(message.chat.id, 'Квест закрыт')
+            try:
+                self.qbox.close_serif_quest(quest)
+                bot.send_message(message.chat.id, 'Квест закрыт')
+            except:
+                bot.send_message(message.chat.id, 'Такого квеста нет')
 
     def close_filter(self, *args, **kwargs):
         return self.qbox.current_state == State.CLOSE_QUEST
